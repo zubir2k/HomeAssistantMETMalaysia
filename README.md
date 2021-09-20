@@ -23,4 +23,5 @@ Please register and obtain METToken from [https://api.met.gov.my/](https://api.m
 ![image](https://user-images.githubusercontent.com/1905339/134056863-58bcd82f-2afe-4cb5-aaa8-edc743483d7d.png)
 
 ### Special Thanks
+- [Bro Anas](https://github.com/anas-ivs) for pointing out MET API 
 - [HomeAssistantMalaysia](https://www.facebook.com/groups/homeassistantmalaysia)
