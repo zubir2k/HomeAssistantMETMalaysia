@@ -1,0 +1,94 @@
+#################################################
+## Weather Forecast from Official MET Malaysia ##
+#################################################
+## Available range: Today, Yesterday & Tomorrow forecast.
+## You are free to do whatever automation from these sensors.
+##
+## IMPORTANT:
+## 1. The sensors are based on command line platform using cURL command.
+## 2. Please obtain your METToken and replace it in line 19 from https://api.met.gov.my/
+## 3. Change the location code in line 19 (look for LOCATION:288) to your desired location.
+## 4. You may refer the location codes table for references.
+
+sensor:
+  - platform: command_line
+    name: MET Malaysia
+    json_attributes:
+      - metadata
+      - results
+    command: 'curl -H "Authorization: METToken 1234567890abcdefghijklmnopqrstuvwxyz1234" "https://api.met.gov.my/v2.1/data?datasetid=FORECAST&datacategoryid=GENERAL&locationid=LOCATION:288&start_date={{ (now().date() + timedelta(days=-1)) }}&end_date={{ (now().date() + timedelta(days=1)) }}"'
+    scan_interval: 7200 #2 hours interval in second format. You may change accordingly to your preference.
+    value_template: "{{ value_json.results[1].locationname }}, {{ value_json.results[1].locationrootname }}"
+    #icon_template: mdi:weather-cloudy-clock
+
+  - platform: template
+    sensors:
+        metmalaysia_fgm:
+            friendly_name: "Morning Forecast"
+            icon_template: mdi:weather-cloudy
+            value_template: >-
+              {{ state_attr("sensor.met_malaysia", "results")[0].value }}
+            attribute_templates: 
+              metcode: '{{ state_attr("sensor.met_malaysia", "results")[0].datatype }}'
+              date: '{{ as_datetime(state_attr("sensor.met_malaysia", "results")[0].date).strftime("%Y-%m-%d") }}'
+        metmalaysia_fga:
+            friendly_name: "Afternoon Forecast"
+            icon_template: mdi:weather-partly-cloudy
+            value_template: >-
+              {{ state_attr("sensor.met_malaysia", "results")[1].value }}
+            attribute_templates: 
+              metcode: '{{ state_attr("sensor.met_malaysia", "results")[1].datatype }}'
+              date: '{{ as_datetime(state_attr("sensor.met_malaysia", "results")[1].date).strftime("%Y-%m-%d") }}'
+        metmalaysia_fgn:
+            friendly_name: "Night Forecast"
+            icon_template: mdi:weather-night-partly-cloudy
+            value_template: >-
+              {{ state_attr("sensor.met_malaysia", "results")[2].value }}
+            attribute_templates: 
+              metcode: '{{ state_attr("sensor.met_malaysia", "results")[2].datatype }}'
+              date: '{{ as_datetime(state_attr("sensor.met_malaysia", "results")[2].date).strftime("%Y-%m-%d") }}'
+        metmalaysia_fmint:
+            friendly_name: "Minimum Temperature"
+            icon_template: mdi:thermometer
+            value_template: >-
+              {{ state_attr("sensor.met_malaysia", "results")[3].value }}
+            attribute_templates: 
+              metcode: '{{ state_attr("sensor.met_malaysia", "results")[3].datatype }}'
+              date: '{{ as_datetime(state_attr("sensor.met_malaysia", "results")[3].date).strftime("%Y-%m-%d") }}'
+            unit_of_measurement: "°C"
+        metmalaysia_fmaxt:
+            friendly_name: "Maximum Temperature"
+            icon_template: mdi:thermometer
+            value_template: >-
+              {{ state_attr("sensor.met_malaysia", "results")[4].value }}
+            attribute_templates: 
+              metcode: '{{ state_attr("sensor.met_malaysia", "results")[4].datatype }}'
+              date: '{{ as_datetime(state_attr("sensor.met_malaysia", "results")[4].date).strftime("%Y-%m-%d") }}'
+            unit_of_measurement: "°C"
+        metmalaysia_fsigw:
+            friendly_name: "Today Forecast"
+            icon_template: mdi:calendar-check
+            value_template: >-
+              {{ state_attr("sensor.met_malaysia", "results")[5].value }}
+            attribute_templates: 
+              metcode: '{{ state_attr("sensor.met_malaysia", "results")[5].datatype }}'
+              date: '{{ as_datetime(state_attr("sensor.met_malaysia", "results")[5].date).strftime("%Y-%m-%d") }}'
+              when: '{{ state_attr("sensor.met_malaysia", "results")[5].attributes.when }}'
+        metmalaysia_fsigw_tomorrow:
+            friendly_name: "Tomorrow Forecast"
+            icon_template: mdi:calendar-month
+            value_template: >-
+              {{ state_attr("sensor.met_malaysia", "results")[11].value }}
+            attribute_templates: 
+              metcode: '{{ state_attr("sensor.met_malaysia", "results")[11].datatype }}'
+              date: '{{ as_datetime(state_attr("sensor.met_malaysia", "results")[11].date).strftime("%Y-%m-%d") }}'
+              when: '{{ state_attr("sensor.met_malaysia", "results")[11].attributes.when }}'
+        metmalaysia_fsigw_yesterday:
+            friendly_name: "Yesterday Forecast"
+            icon_template: mdi:calendar-month-outline
+            value_template: >-
+              {{ state_attr("sensor.met_malaysia", "results")[17].value }}
+            attribute_templates: 
+              metcode: '{{ state_attr("sensor.met_malaysia", "results")[17].datatype }}'
+              date: '{{ as_datetime(state_attr("sensor.met_malaysia", "results")[17].date).strftime("%Y-%m-%d") }}'
+              when: '{{ state_attr("sensor.met_malaysia", "results")[17].attributes.when }}'
