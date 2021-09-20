@@ -1,0 +1,29 @@
+## Just copy & paste
+## You may also create manually as desired. 
+
+- title: MET Malaysia
+  path: met-malaysia
+  icon: mdi:weather-cloudy
+  type: sidebar
+  badges: []
+  cards:
+    - type: entities
+      entities:
+        - entity: sensor.met_malaysia
+        - entity: sensor.metmalaysia_fsigw
+        - entity: sensor.metmalaysia_fsigw_tomorrow
+        - entity: sensor.metmalaysia_fsigw_yesterday
+        - entity: sensor.metmalaysia_fgm
+        - entity: sensor.metmalaysia_fga
+        - entity: sensor.metmalaysia_fgn
+        - entity: sensor.metmalaysia_fmint
+        - entity: sensor.metmalaysia_fmaxt
+      title: MET Malaysia
+      view_layout:
+        position: sidebar
+    - type: picture
+      image: https://api.met.gov.my/static/images/satelit-latest.gif
+      tap_action:
+        action: none
+      hold_action:
+        action: none
