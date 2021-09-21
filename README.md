@@ -1,5 +1,5 @@
 # HomeAssistantMETMalaysia ![visitors](https://visitor-badge.glitch.me/badge?page_id=zubir2k.homeassistantmetmalaysia.visitor-badge)
-Pull weather forecast from Malaysian Meteorological Department (MET) API.\
+Weather forecast from Malaysia Meteorological Department (MET) API.\
 Sensors are based on General Forecast with range of Today, Yesterday and Tomorrow.
 
 Please register and obtain METToken from [https://api.met.gov.my/](https://api.met.gov.my/)
