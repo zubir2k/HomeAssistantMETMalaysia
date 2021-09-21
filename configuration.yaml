@@ -17,7 +17,7 @@ sensor:
       - metadata
       - results
     command: 'curl -H "Authorization: METToken 1234567890abcdefghijklmnopqrstuvwxyz1234" "https://api.met.gov.my/v2.1/data?datasetid=FORECAST&datacategoryid=GENERAL&locationid=LOCATION:288&start_date={{ (now().date() + timedelta(days=-1)) }}&end_date={{ (now().date() + timedelta(days=1)) }}"'
-    #scan_interval: 7200 #2 hours interval in second format. You may change accordingly to your preference.
+    scan_interval: 7200 #2hours interval in second format. Reducing the interval may get you throttled (https://api.met.gov.my/dashboard/docs#throttle). 
     value_template: "{{ value_json.results[1].locationname }}, {{ value_json.results[1].locationrootname }}"
     #icon_template: mdi:weather-cloudy-clock
 
