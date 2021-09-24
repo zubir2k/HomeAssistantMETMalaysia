@@ -4,10 +4,14 @@ Sensors are based on General Forecast with range of Today, Yesterday and Tomorro
 
 Please register and obtain METToken from [https://api.met.gov.my/](https://api.met.gov.my/)
 
-**IMPORTANT NOTE 21/09/2021 @ 9:00PM:**
+**IMPORTANT NOTE** 
+
+**21/09/2021 @ 9:00PM:**
 AS SUSPECTED, THE RESPONSE FROM THE API WILL GENERATED IN RANDOM SEQUENCE
 THUS IMPACTING THE ARRAY AND CAUSES THE SENSORS TO GET WRONG DATA. WILL NEED TO TEST FEW MORE ROUNDS.
 
+**24/09/2021 @ 11:30PM:**
+ENHANCEMENT TO SENSORS USING FOR LOOP TO DETERMINE THE CORRECT ARRAY. REMOVED SOME OF THE SENSOR ATTRIBUTES.
 
 ## Installation
 ### 1. [configuration.yaml](configuration.yaml)
