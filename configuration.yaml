@@ -6,8 +6,8 @@
 ##
 ## IMPORTANT:
 ## 1. The sensors are based on command line platform using cURL command.
-## 2. Please obtain your METToken and replace it in line 19 from https://api.met.gov.my/
-## 3. Change the location code in line 19 (look for LOCATION:288) to your desired location.
+## 2. Please obtain your METToken and replace it in line 20 from https://api.met.gov.my/
+## 3. Change the location code in line 20 (look for LOCATION:288) to your desired location.
 ## 4. You may refer the location codes table for references.
 
 sensor:
