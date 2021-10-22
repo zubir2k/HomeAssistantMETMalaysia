@@ -4,14 +4,17 @@ Sensors are based on General Forecast with range of Today, Yesterday and Tomorro
 
 Please register and obtain METToken from [https://api.met.gov.my/](https://api.met.gov.my/)
 
-**NOTES** 
+**UPDATE/CHANGELOG** 
 
-**24/09/2021 @ 11:30PM:**
-ENHANCEMENT TO SENSORS USING FOR LOOP TO DETERMINE THE CORRECT ARRAY. REMOVED SOME OF THE SENSOR ATTRIBUTES.
+**22/10/2021 @ 11:30AM:**\
+Enhancement to sensors to support custom weather template. 
 
-**21/09/2021 @ 9:00PM:**
-AS SUSPECTED, THE RESPONSE FROM THE API WILL GENERATED IN RANDOM SEQUENCE
-THUS IMPACTING THE ARRAY AND CAUSES THE SENSORS TO GET WRONG DATA. WILL NEED TO TEST FEW MORE ROUNDS.
+**24/09/2021 @ 11:30PM:**\
+Enhancement to sensors using for loop to determine the correct array. Removed some of the sensor attributes.
+
+**21/09/2021 @ 9:00PM:**\
+As suspected, the response from the api will generated in random sequence
+Thus impacting the array and causes the sensors to get wrong data. Will need to test few more rounds.
 
 ## Installation
 ### 1. [configuration.yaml](configuration.yaml)
@@ -29,7 +32,9 @@ THUS IMPACTING THE ARRAY AND CAUSES THE SENSORS TO GET WRONG DATA. WILL NEED TO 
 - Feel free to apply any automation from these sensors
 
 ### Example output
-![image](https://user-images.githubusercontent.com/1905339/134056863-58bcd82f-2afe-4cb5-aaa8-edc743483d7d.png)
+![image](https://user-images.githubusercontent.com/1905339/134056863-58bcd82f-2afe-4cb5-aaa8-edc743483d7d.png)\
+![image](https://user-images.githubusercontent.com/1905339/138391388-d2e0ecc4-f71a-438d-b589-9361dc8daab7.png)\
+![image](https://user-images.githubusercontent.com/1905339/138391416-0ecda0a6-2c4c-41e2-9217-60da0ee8de8b.png)
 
 ### Special Thanks
 - [Bro Anas](https://github.com/anas-ivs) for pointing out MET API 
