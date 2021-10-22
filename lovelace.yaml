@@ -7,6 +7,12 @@
   type: sidebar
   badges: []
   cards:
+    - type: weather-forecast
+      entity: weather.met_malaysia
+      show_forecast: true
+      secondary_info_attribute: humidity
+      view_layout:
+        position: sidebar
     - type: entities
       entities:
         - entity: sensor.met_malaysia
@@ -16,8 +22,10 @@
         - entity: sensor.metmalaysia_fgm
         - entity: sensor.metmalaysia_fga
         - entity: sensor.metmalaysia_fgn
-        - entity: sensor.metmalaysia_fmint
+        - type: divider
         - entity: sensor.metmalaysia_fmaxt
+        - entity: sensor.metmalaysia_fmint
+        - entity: sensor.metmalaysia_humidity
       title: MET Malaysia
       view_layout:
         position: sidebar
