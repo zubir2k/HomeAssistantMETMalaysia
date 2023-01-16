@@ -13,7 +13,7 @@ Please register and obtain METToken from [https://api.met.gov.my/](https://api.m
 ### 1. Copy all files
 - Browse into your Home Assistant directory and paste all files into `\config`.
 
-### 2. Add your METToken to [secret.yaml](secret.yaml)
+### 2. Add your METToken to [secrets.yaml](secrets.yaml)
 - Add the following line into the secret yaml file
 
 ```yaml
