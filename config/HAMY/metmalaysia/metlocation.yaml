@@ -1,0 +1,246 @@
+#The list is as at 21st Sept 2021 pulled from MET API.
+input_select:
+  metmalaysia_location:
+    name: "MET Malaysia Location"
+    icon: mdi:cloud-print-outline
+    initial: "288 KAJANG"
+    options:
+      - 122 AYER HITAM
+      - 123 BATU PAHAT
+      - 124 JOHOR BAHRU
+      - 125 LABIS
+      - 126 TANGKAK
+      - 127 MUAR
+      - 128 PAGOH
+      - 129 KLUANG
+      - 130 KOTA TINGGI
+      - 131 MERSING
+      - 132 NUSAJAYA
+      - 133 PASIR GUDANG
+      - 134 PONTIAN
+      - 135 SEGAMAT
+      - 136 SENAI
+      - 137 SIMPANG RENGGAM
+      - 138 YONG PENG
+      - 439 KULAI
+      - 659 ISKANDAR PUTERI
+      - 214 BAGAN DATOH
+      - 215 BAGAN SERAI
+      - 216 BATU GAJAH
+      - 217 GERIK
+      - 218 GOPENG
+      - 219 IPOH
+      - 220 KAMPAR
+      - 221 KUALA KANGSAR
+      - 222 LENGGONG
+      - 223 PARIT BUNTAR
+      - 224 SELAMA
+      - 225 SUNGAI SIPUT
+      - 226 SITIAWAN
+      - 227 TAIPING
+      - 228 TAPAH
+      - 229 TANJUNG MALIM
+      - 230 TELUK INTAN
+      - 231 SLIM RIVER
+      - 383 HILIR PERAK
+      - 398 KERIAN
+      - 401 PERAK TENGAH
+      - 431 SERI ISKANDAR
+      - 434 BAGAN DATUK
+      - 676 LUBOK MERBAU
+      - 232 ARAU
+      - 233 BESERI
+      - 234 CHUPING
+      - 236 PADANG BESAR
+      - 412 PADANG BESAR UTARA
+      - 424 PERLIS
+      - 671 KANGAR
+      - 679 KUALA PERLIS
+      - 237 PUTRAJAYA
+      - 674 KASA
+      - 606 SANDAKAN
+      - 607 KOTA KINABALU
+      - 608 TAWAU
+      - 609 KUDAT
+      - 610 SEMPORNA
+      - 611 TENOM
+      - 612 PAPAR
+      - 613 BELURAN
+      - 614 TAMBUNAN
+      - 615 KOTA BELUD
+      - 616 KINABATANGAN
+      - 617 TELUPID
+      - 618 TONGOD
+      - 619 PUTATAN
+      - 620 TUARAN
+      - 621 KOTA MARUDU
+      - 622 PENAMPANG
+      - 623 SIPITANG
+      - 624 PITAS
+      - 625 RANAU
+      - 626 KUNAK
+      - 627 NABAWAN
+      - 629 KENINGAU
+      - 630 KUALA PENYU
+      - 631 LAHAD DATU
+      - 632 BEAUFORT
+      - 260 BETONG
+      - 261 BINTAGOR
+      - 262 BINTULU
+      - 263 KANOWIT
+      - 264 KAPIT
+      - 265 KOTA SAMARAHAN
+      - 266 KUCHING
+      - 267 LIMBANG
+      - 268 LAWAS
+      - 269 LUBOK ANTU
+      - 272 MATU DARO
+      - 273 MIRI
+      - 274 MUKAH
+      - 275 MULU
+      - 276 SANTUBONG
+      - 277 SARATOK
+      - 278 SARIKEI
+      - 279 SERIAN
+      - 280 SIBU
+      - 281 SRI AMAN
+      - 282 TATAU
+      - 633 LUNDU
+      - 634 TEBEDU
+      - 635 BELAGA
+      - 636 PUSA
+      - 637 PAKAN
+      - 638 BAU
+      - 639 ASAJAYA
+      - 640 JULAU
+      - 641 SELANGAU
+      - 642 DARO
+      - 643 MATU
+      - 644 DALAT
+      - 645 SONG
+      - 647 BELURU
+      - 648 BUKIT MABONG
+      - 649 KABONG
+      - 650 SEBAUH
+      - 651 SIMUNJAN
+      - 652 TANJUNG MANIS
+      - 653 LONG LAMA
+      - 672 TAMAN NEGARA GUNUNG MULU
+      - 673 TAMAN NEGARA NIAH
+      - 283 BANGI
+      - 284 BANTING
+      - 285 BATU CAVES
+      - 286 CYBERJAYA
+      - 287 DAMANSARA
+      - 288 KAJANG
+      - 289 KUALA KUBU BHARU
+      - 290 KUALA SELANGOR
+      - 291 RAWANG
+      - 293 PETALING JAYA
+      - 294 SABAK BERNAM
+      - 295 SHAH ALAM
+      - 296 SEMENYIH
+      - 297 SENTUL
+      - 298 SEPANG
+      - 299 SERI KEMBANGAN
+      - 300 SUBANG JAYA
+      - 382 HULU LANGAT
+      - 404 HULU SELANGOR
+      - 537 PELABUHAN KLANG
+      - 605 PORT KLANG
+      - 301 BANDAR PERMAISURI
+      - 302 BESUT
+      - 303 DUNGUN
+      - 304 JERTEH
+      - 305 KEMAMAN
+      - 306 KERTIH
+      - 307 KUALA TERENGGANU
+      - 308 PAKA
+      - 309 SETIU
+      - 437 KUALA NERUS
+      - 678 KERTEH
+      - 139 ALOR STAR
+      - 140 BALING
+      - 141 JITRA
+      - 142 KUALA NERANG
+      - 143 KULIM
+      - 144 LANGKAWI
+      - 145 PENDANG
+      - 146 POKOK SENA
+      - 147 SIK
+      - 148 SUNGAI PETANI
+      - 149 YAN
+      - 408 KUALA MUDA
+      - 410 KUBANG PASU
+      - 426 SERDANG
+      - 150 BACHOK
+      - 151 GUA MUSANG
+      - 152 JELI
+      - 153 KOTA BHARU
+      - 154 KUALA KRAI
+      - 155 LOJING
+      - 156 MACHANG
+      - 157 PASIR MAS
+      - 158 PASIR PUTEH
+      - 159 RANTAU PANJANG
+      - 160 TANAH MERAH
+      - 161 TUMPAT
+      - 162 AMPANG
+      - 163 BANGSAR
+      - 164 BUKIT BINTANG
+      - 165 CHERAS
+      - 166 JALAN DUTA
+      - 167 KEPONG
+      - 168 SELAYANG
+      - 169 SETAPAK
+      - 170 SUNGAI BESI
+      - 340 KUALA LUMPUR
+      - 628 LABUAN
+      - 172 ALOR GAJAH
+      - 173 AYER KEROH
+      - 174 BANDARAYA MELAKA
+      - 175 DURIAN TUNGGAL
+      - 176 JASIN
+      - 177 MASJID TANAH
+      - 178 MERLIMAU
+      - 179 TANGGA BATU
+      - 661 MELAKA CITY
+      - 180 GEMAS
+      - 181 JELEBU
+      - 182 JEMPOL
+      - 183 KUALA KLAWANG
+      - 184 KUALA PILAH
+      - 185 NILAI
+      - 186 PORT DICKSON
+      - 187 REMBAU
+      - 188 SEREMBAN
+      - 189 TAMPIN
+      - 539 MALACCA CITY
+      - 680 PDSA ENSTEK
+      - 190 BENTONG
+      - 191 BERA
+      - 192 JERANTUT
+      - 193 KUANTAN
+      - 194 KUALA LIPIS
+      - 195 KUALA ROMPIN
+      - 196 MARAN
+      - 197 MENTAKAB
+      - 198 MUADZAM SHAH
+      - 199 PEKAN
+      - 200 RAUB
+      - 201 TEMERLOH
+      - 202 TRIANG
+      - 675 BATU EMBUN
+      - 203 AYER ITAM
+      - 204 BALIK PULAU
+      - 205 BAYAN LEPAS
+      - 206 BATU KAWAN
+      - 207 BUTTERWORTH
+      - 208 BUKIT MERTAJAM
+      - 209 BUKIT TENGAH
+      - 210 GEORGETOWN
+      - 211 KEPALA BATAS
+      - 212 NIBONG TEBAL
+      - 213 PERAI
+      - 407 BARAT DAYA
+      - 677 PRAI

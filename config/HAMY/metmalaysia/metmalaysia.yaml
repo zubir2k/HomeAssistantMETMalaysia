@@ -1,0 +1,224 @@
+## Weather Information from MET Malaysia
+## Version 1.1 - All sensors, and input are packaged into 1 single yaml
+## IMPORTANT NOTE: Provide your METToken key as "metmalaysia" in secret.yaml
+## Last Update Date: 05/01/2023
+
+sensor:
+  - platform: rest
+    name: "MET Malaysia"
+    unique_id: metmalaysia
+    headers:
+      authorization: !secret metmalaysia
+    resource_template: >-
+      https://api.met.gov.my/v2.1/data?datasetid=FORECAST&datacategoryid=GENERAL&locationid=LOCATION:{{ states('input_select.metmalaysia_location')[0:3] }}&start_date={{ (now().date() + timedelta(days=0)) }}&end_date={{ (now().date() + timedelta(days=6)) }}
+    scan_interval: 7200 #Sensor interval is 2hours in second format. Reducing the interval may get you throttled (https://api.met.gov.my/dashboard/docs#throttle). 
+    value_template: >-
+      {{ value_json.results[1].locationname  | title}}, {{ value_json.results[1].locationrootname  | title}}
+    json_attributes:
+      - metadata
+      - results
+
+  - platform: command_line
+    name: "MET Malaysia wttr"
+    unique_id: metmalaysia_wttr
+    command: >-
+      curl "https://wttr.in/{{ states('sensor.met_malaysia') | replace(', ','_') }}?format=j1"
+    value_template: "{{ value_json.request[0].query | regex_replace('(Lat |Lon |and )', '') | replace(' ', ',') }}"
+    json_attributes:
+      - current_condition
+      - weather
+
+  - platform: template
+    sensors:
+        metmalaysia_humidity:
+          friendly_name: "Humidity"
+          value_template: "{{ state_attr('sensor.met_malaysia_wttr', 'current_condition')[0].humidity }}"
+          device_class: humidity
+          unit_of_measurement: "%"
+        metmalaysia_now:
+          friendly_name: "Current Weather"
+          icon_template: >-
+            {% if as_timestamp(now()) | timestamp_custom('%H') | int < 12 %}{{state_attr("sensor.metmalaysia_fgm", "icon")}}
+            {% elif as_timestamp(now()) | timestamp_custom('%H') | int < 18 %}{{state_attr("sensor.metmalaysia_fga", "icon")}}
+            {% else %}{{state_attr("sensor.metmalaysia_fgn", "icon")}}
+            {% endif %}
+          value_template: >-
+            {% if as_timestamp(now()) | timestamp_custom('%H') | int < 12 %}{{states.sensor.metmalaysia_fgm.state}}
+            {% elif as_timestamp(now()) | timestamp_custom('%H') | int < 18 %}{{states.sensor.metmalaysia_fga.state}}
+            {% else %}{{states.sensor.metmalaysia_fgn.state}}
+            {% endif %}
+          attribute_templates: 
+            condition: >-
+              {% if as_timestamp(now()) | timestamp_custom('%H') | int < 12 %}{{state_attr("sensor.metmalaysia_fgm", "condition")}}
+              {% elif as_timestamp(now()) | timestamp_custom('%H') | int < 18 %}{{state_attr("sensor.metmalaysia_fga", "condition")}}
+              {% else %}{{state_attr("sensor.metmalaysia_fgn", "condition")}}
+              {% endif %}
+            forecast: >-
+              {% set forecast_json = {"datetime": as_datetime(now().date() ~ " 10:00:00")|as_timestamp|timestamp_utc,"condition": state_attr('sensor.metmalaysia_fgm', 'condition'),"temperature": states.sensor.metmalaysia_fmaxt.state|float,"templow": states.sensor.metmalaysia_fmint.state|float},{"datetime": as_datetime(now().date() ~ " 12:00:00")|as_timestamp|timestamp_utc,"condition": state_attr('sensor.metmalaysia_fga', 'condition'),"temperature": states.sensor.metmalaysia_fmaxt.state|float,"templow": states.sensor.metmalaysia_fmint.state|float},{"datetime": as_datetime(now().date() ~ " 20:00:00")|as_timestamp|timestamp_utc,"condition": state_attr('sensor.metmalaysia_fgn', 'condition'),"temperature": states.sensor.metmalaysia_fmaxt.state|float,"templow": states.sensor.metmalaysia_fmint.state|float} %}
+              {{ forecast_json }}
+            forecastweek: >-
+              {%- for x in range(7) %}{
+              {%- for state in state_attr('sensor.met_malaysia', 'results') %}
+              {%- if state.datatype == 'FSIGW' and as_datetime(state.date).date() == now().date() + timedelta(days=x) %}"datetime":"{{ as_datetime(state.date)|as_timestamp|timestamp_utc }}","condition":"{%if state.value | lower == "no rain"%}sunny{%elif state.value | lower == "rain"%}rainy{%elif state.value | lower == "thunderstorms"%}lightning{%else%}partlycloudy{%endif%}"
+              {%- elif state.datatype == 'FMAXT' and as_datetime(state.date).date() == now().date() + timedelta(days=x) %}"temperature":"{{ state.value }}",
+              {%- elif state.datatype == 'FMINT' and as_datetime(state.date).date() == now().date() + timedelta(days=x) %}"templow":"{{ state.value }}",{%- endif -%}
+              {% endfor %}{% if loop.last %}}{% else %}},
+              {% endif %}{% endfor %}
+
+        metmalaysia_fgm:
+            friendly_name: "Morning Forecast"
+            icon_template: >-
+              {% if states.sensor.metmalaysia_fgm.state == "Thunderstorms" or states.sensor.metmalaysia_fgm.state == "Rain" %}mdi:weather-pouring
+              {% else %}mdi:weather-cloudy
+              {% endif %}
+            value_template: >-
+              {% for x in range(18) -%}
+              {{ iif(now().date() == as_datetime(state_attr('sensor.met_malaysia', 'results')[x].date).date() and state_attr('sensor.met_malaysia', 'results')[x].datatype == 'FGM', state_attr('sensor.met_malaysia', 'results')[x].value, '') }}
+              {%- endfor %}
+            attribute_templates: 
+              condition: '{%if states.sensor.metmalaysia_fgm.state == "No Rain" or states.sensor.metmalaysia_fgm.state == "no rain"%}sunny{%elif states.sensor.metmalaysia_fgm.state == "Rain"%}rainy{%elif states.sensor.metmalaysia_fgm.state == "Thunderstorms"%}lightning{%else %}partlycloudy{% endif %}'
+        metmalaysia_fga:
+            friendly_name: "Afternoon Forecast"
+            icon_template: >-
+              {% if states.sensor.metmalaysia_fga.state == "Thunderstorms" or states.sensor.metmalaysia_fga.state == "Rain" %}mdi:weather-pouring
+              {% else %}mdi:weather-partly-cloudy
+              {% endif %}
+            value_template: >-
+              {% for x in range(18) -%}
+              {{ iif(now().date() == as_datetime(state_attr('sensor.met_malaysia', 'results')[x].date).date() and state_attr('sensor.met_malaysia', 'results')[x].datatype == 'FGA', state_attr('sensor.met_malaysia', 'results')[x].value, '') }}
+              {%- endfor %}
+            attribute_templates: 
+              condition: '{%if states.sensor.metmalaysia_fga.state == "No Rain" or states.sensor.metmalaysia_fga.state == "no rain"%}sunny{%elif states.sensor.metmalaysia_fga.state == "Rain"%}rainy{%elif states.sensor.metmalaysia_fga.state == "Thunderstorms"%}lightning{%else %}partlycloudy{% endif %}'
+        metmalaysia_fgn:
+            friendly_name: "Night Forecast"
+            icon_template: >-
+              {% if states.sensor.metmalaysia_fgn.state == "Thunderstorms" or states.sensor.metmalaysia_fgn.state == "Rain" %}mdi:weather-pouring
+              {% else %}mdi:weather-night-partly-cloudy
+              {% endif %}
+            value_template: >-
+              {% for x in range(18) -%}
+              {{ iif(now().date() == as_datetime(state_attr('sensor.met_malaysia', 'results')[x].date).date() and state_attr('sensor.met_malaysia', 'results')[x].datatype == 'FGN', state_attr('sensor.met_malaysia', 'results')[x].value, '') }}
+              {%- endfor %}
+            attribute_templates: 
+              condition: '{%if states.sensor.metmalaysia_fgn.state == "No Rain" or states.sensor.metmalaysia_fgn.state == "no rain"%}sunny{%elif states.sensor.metmalaysia_fgn.state == "Rain"%}rainy{%elif states.sensor.metmalaysia_fgn.state == "Thunderstorms"%}lightning{%else %}partlycloudy{% endif %}'
+        metmalaysia_fmint:
+            friendly_name: "Minimum Temperature"
+            icon_template: mdi:thermometer
+            value_template: >-
+              {%- for state in state_attr('sensor.met_malaysia', 'results') %}
+              {%- if state.datatype == 'FMINT' and as_datetime(state.date).date() == now().date() %}{{ state.value }}
+              {% else %}{% endif -%}{% endfor -%}
+            unit_of_measurement: "°C"
+        metmalaysia_fmaxt:
+            friendly_name: "Maximum Temperature"
+            icon_template: mdi:thermometer
+            value_template: >-
+              {%- for state in state_attr('sensor.met_malaysia', 'results') %}
+              {%- if state.datatype == 'FMAXT' and as_datetime(state.date).date() == now().date() %}{{ state.value }}
+              {% else %}{% endif -%}{% endfor -%}
+            unit_of_measurement: "°C"
+        metmalaysia_fsigw:
+            friendly_name: "Today Forecast"
+            icon_template: mdi:calendar-check
+            value_template: >-
+              {% for x in range(18) -%}
+              {% if now().strftime("%Y-%m-%d") == as_datetime(state_attr("sensor.met_malaysia", "results")[x].date).strftime("%Y-%m-%d") and state_attr("sensor.met_malaysia", "results")[x].datatype == 'FSIGW' %}{{ state_attr("sensor.met_malaysia", "results")[x].value }}
+              {% endif -%}
+              {% endfor %}
+            attribute_templates: 
+              when: >-
+                {% for x in range(18) -%}
+                {% if now().strftime("%Y-%m-%d") == as_datetime(state_attr("sensor.met_malaysia", "results")[x].date).strftime("%Y-%m-%d") and state_attr("sensor.met_malaysia", "results")[x].datatype == 'FSIGW' %}{{ state_attr("sensor.met_malaysia", "results")[x].attributes.when }}
+                {% endif -%}
+                {% endfor %}
+        metmalaysia_fsigw_tomorrow:
+            friendly_name: "Tomorrow Forecast"
+            icon_template: mdi:calendar-month
+            value_template: >-
+              {% for x in range(18) -%}
+              {% if (now() + timedelta(days=1)).strftime("%Y-%m-%d") == as_datetime(state_attr("sensor.met_malaysia", "results")[x].date).strftime("%Y-%m-%d") and state_attr("sensor.met_malaysia", "results")[x].datatype == 'FSIGW' %}{{ state_attr("sensor.met_malaysia", "results")[x].value }}
+              {% endif -%}
+              {% endfor %}
+            attribute_templates: 
+              when: >-
+                {% for x in range(18) -%}
+                {% if (now() + timedelta(days=1)).strftime("%Y-%m-%d") == as_datetime(state_attr("sensor.met_malaysia", "results")[x].date).strftime("%Y-%m-%d") and state_attr("sensor.met_malaysia", "results")[x].datatype == 'FSIGW' %}{{ state_attr("sensor.met_malaysia", "results")[x].attributes.when }}
+                {% endif -%}
+                {% endfor %}
+        metmalaysia_fsigw_yesterday:
+            friendly_name: "Yesterday Forecast"
+            icon_template: mdi:calendar-month-outline
+            value_template: >-
+              {% for x in range(18) -%}
+              {% if (now() + timedelta(days=-1)).strftime("%Y-%m-%d") == as_datetime(state_attr("sensor.met_malaysia", "results")[x].date).strftime("%Y-%m-%d") and state_attr("sensor.met_malaysia", "results")[x].datatype == 'FSIGW' %}{{ state_attr("sensor.met_malaysia", "results")[x].value }}
+              {% endif -%}
+              {% endfor %}
+            attribute_templates: 
+              when: >-
+                {% for x in range(18) -%}
+                {% if (now() + timedelta(days=-1)).strftime("%Y-%m-%d") == as_datetime(state_attr("sensor.met_malaysia", "results")[x].date).strftime("%Y-%m-%d") and state_attr("sensor.met_malaysia", "results")[x].datatype == 'FSIGW' %}{{ state_attr("sensor.met_malaysia", "results")[x].attributes.when }}
+                {% endif -%}
+                {% endfor %}
+        metmalaysia_image:
+          friendly_name: "MET Malaysia Image"
+          value_template: "{{ states('input_select.metmalaysia_imagery') }}"
+          icon_template: mdi:satellite
+          attribute_templates:
+            satellite: "https://api.met.gov.my/static/images/satelit-latest.gif"
+            radarcurrent: "https://api.met.gov.my/static/images/radar-latest.gif"
+            radarforecast: "https://api.met.gov.my/static/images/swirl-latest.gif"
+            windy: "https://embed.windy.com/embed2.html?lat=3.382&lon=108.062&detailLat=3.008&detailLon=101.772&width=650&height=450&zoom=5&level=surface&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1"
+            selected: >-
+              {%set option = states('input_select.metmalaysia_imagery') %}
+              {%if option == 'Satellite' %}{{state_attr('sensor.metmalaysia_image', 'satellite')}}
+              {%elif option == 'Radar: Current' %}{{state_attr('sensor.metmalaysia_image', 'radarcurrent')}}
+              {%elif option == 'Radar: Forecast' %}{{state_attr('sensor.metmalaysia_image', 'radarforecast')}}
+              {%elif option == 'Windy' %}{{state_attr('sensor.metmalaysia_image', 'windy')}}
+              {%endif%}
+
+input_select:
+  metmalaysia_imagery:
+    name: "MET Malaysia Imagery"
+    initial: "Satellite"
+    icon: mdi:satellite-variant
+    options:
+      - "Satellite"
+      - "Radar: Current"
+      - "Radar: Forecast"
+      - "Windy"
+
+weather:
+  - platform: template
+    unique_id: "met_malaysia"
+    name: "MET Malaysia"
+    attribution_template: "Customized by Home Assistant Malaysia. Data provided by MET Malaysia & wttr.in"
+    condition_template: "{{ state_attr('sensor.metmalaysia_now', 'condition') }}"
+    temperature_template: "{{ states('sensor.metmalaysia_fmaxt') | float }}"
+    humidity_template: "{{ states('sensor.metmalaysia_humidity') | float }}"
+    forecast_template: "{{ state_attr('sensor.metmalaysia_now', 'forecast') }}"
+    visibility_template: "{{ state_attr('sensor.met_malaysia_wttr', 'current_condition')[0].visibility }}"
+    visibility_unit: "km"
+    pressure_template: "{{ state_attr('sensor.met_malaysia_wttr', 'current_condition')[0].pressure }}"
+    pressure_unit: "hPa"
+    wind_speed_template: "{{ state_attr('sensor.met_malaysia_wttr', 'current_condition')[0].windspeedKmph }}"
+    wind_speed_unit: "km/h"
+    wind_bearing_template: "{{ state_attr('sensor.met_malaysia_wttr', 'current_condition')[0].winddirDegree }}"
+
+  - platform: template
+    unique_id: "met_malaysia_weekly"
+    name: "MET Malaysia Weekly"
+    attribution_template: "Customized by Home Assistant Malaysia. Data provided by MET Malaysia & wttr.in"
+    condition_template: "{{ state_attr('sensor.metmalaysia_now', 'condition') }}"
+    temperature_template: "{{ states('sensor.metmalaysia_fmaxt') | float }}"
+    humidity_template: "{{ states('sensor.metmalaysia_humidity') | float }}"
+    forecast_template: "{{ state_attr('sensor.metmalaysia_now', 'forecastweek') }}"
+    visibility_template: "{{ state_attr('sensor.met_malaysia_wttr', 'current_condition')[0].visibility }}"
+    visibility_unit: "km"
+    pressure_template: "{{ state_attr('sensor.met_malaysia_wttr', 'current_condition')[0].pressure }}"
+    pressure_unit: "hPa"
+    wind_speed_template: "{{ state_attr('sensor.met_malaysia_wttr', 'current_condition')[0].windspeedKmph }}"
+    wind_speed_unit: "km/h"
+    wind_bearing_template: "{{ state_attr('sensor.met_malaysia_wttr', 'current_condition')[0].winddirDegree }}"
+    
+
+    
