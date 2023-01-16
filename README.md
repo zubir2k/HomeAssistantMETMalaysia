@@ -4,7 +4,7 @@ Please register and obtain METToken from [https://api.met.gov.my/](https://api.m
 
 ### What's New
 - Location code is now available as dropdown list.
-- METToken number is now defined in `secret.yaml`
+- METToken number is now defined in `secrets.yaml`
 - Satellite imagery can be selected from a dropdown list.
 - Included imagery from [Windy](https://windy.com)
 - Added sensors from [wttr.in](https://wttr.in)
