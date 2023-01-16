@@ -3,10 +3,11 @@ Weather forecast from Malaysia Meteorological Department (MET) API.\
 Please register and obtain METToken from [https://api.met.gov.my/](https://api.met.gov.my/)
 
 ### What's New
+- 2 Weather entity: weekly and current day
 - Location code is now available as dropdown list.
 - METToken number is now defined in `secrets.yaml`
 - Satellite imagery can be selected from a dropdown list.
-- Included imagery from [Windy](https://windy.com)
+- Included satellite imagery from [Windy](https://windy.com)
 - Added sensors from [wttr.in](https://wttr.in)
 
 ## Installation
