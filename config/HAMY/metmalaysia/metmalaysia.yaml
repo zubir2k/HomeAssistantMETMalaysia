@@ -22,7 +22,7 @@ sensor:
     name: "MET Malaysia wttr"
     unique_id: metmalaysia_wttr
     command: >-
-      curl "https://wttr.in/{{ states('sensor.met_malaysia') | replace(', ','_') }}?format=j1"
+      curl "https://wttr.in/{{ states('sensor.met_malaysia') | replace(', ','_') | replace(' ', '%20') }}?format=j1"
     value_template: "{{ value_json.request[0].query | regex_replace('(Lat |Lon |and )', '') | replace(' ', ',') }}"
     json_attributes:
       - current_condition
