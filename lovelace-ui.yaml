@@ -1,0 +1,60 @@
+## Weather Card & Configuration Panel ##
+type: vertical-stack
+cards:
+  - type: markdown
+    content: >-
+      This template pulls weather forcast information from MET Malaysia API. To
+      begin, please obtain the token by register a FREE account from their website
+      (https://api.met.gov.my).
+
+
+      Once you have obtained the token, save the token information into your
+      secret.yaml as follows:
+
+      `metmalaysia: METToken 1234567890abcdefghijklmnopqrstuvwxyz1234`
+    view_layout:
+      position: sidebar
+    title: 🌦️ MET Malaysia Weather
+  - show_current: true
+    show_forecast: true
+    type: weather-forecast
+    entity: weather.met_malaysia
+    view_layout:
+      position: sidebar
+  - show_current: false
+    show_forecast: true
+    type: weather-forecast
+    entity: weather.met_malaysia_weekly
+    view_layout:
+      position: sidebar
+  - type: entities
+    entities:
+      - entity: sensor.met_malaysia
+      - entity: input_select.metmalaysia_imagery
+      - entity: input_select.metmalaysia_location
+    view_layout:
+      position: sidebar
+view_layout:
+  position: sidebar
+  
+## Satellite Imagery ##
+type: vertical-stack
+cards:
+  - type: conditional
+    conditions:
+      - entity: input_select.metmalaysia_imagery
+        state: Windy
+    card:
+      type: iframe
+      url: >-
+        https://embed.windy.com/embed2.html?lat=3.382&lon=108.062&detailLat=3.008&detailLon=101.772&width=650&height=450&zoom=5&level=surface&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1
+      aspect_ratio: 100%
+  - type: conditional
+    conditions:
+      - entity: input_select.metmalaysia_imagery
+        state_not: Windy
+    card:
+      type: markdown
+      content: |-
+        ## 📡 MET Malaysia Imagery - {{states('sensor.metmalaysia_image')}}
+        ![image]({{state_attr('sensor.metmalaysia_image', 'selected')}})
