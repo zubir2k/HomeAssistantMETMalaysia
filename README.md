@@ -15,7 +15,7 @@ Please register and obtain METToken from [https://api.met.gov.my/](https://api.m
 - Browse into your Home Assistant directory and paste all files into `\config`.
 
 ### 2. Add your METToken to [secrets.yaml](secrets.yaml)
-- Add the following line into the secret yaml file
+- Add the following line into the secret yaml file. (**IMPORTANT**: replace below with your acquired METToken)
 
 ```yaml
 metmalaysia: METToken 1234567890abcdefghijklmnopqrstuvwxyz1234
@@ -50,4 +50,5 @@ homeassistant:
 
 ### Special Thanks
 - [Bro Anas](https://github.com/anas-ivs) for pointing out MET API 
+- [MET Malaysia](https://www.met.gov.my/)
 - [HomeAssistantMalaysia](https://www.facebook.com/groups/homeassistantmalaysia)
