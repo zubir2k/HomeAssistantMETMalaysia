@@ -2,6 +2,10 @@
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=zubir2k.homeassistantmetmalaysia.visitor-badge)
 [![Donate](https://img.shields.io/badge/donate-Coffee-yellow.svg)](https://zbrj.ml/buymecoffee)
 
+> [!Tip]
+> Home Assistant Integration is available as a successor to this template. \
+> [https://github.com/zubir2k/homeassistant-malaysiaweather](https://github.com/zubir2k/homeassistant-malaysiaweather)
+
 Weather forecast from Malaysia Meteorological Department (MET) API.\
 Please register and obtain METToken from [https://api.met.gov.my/](https://api.met.gov.my/)
 
