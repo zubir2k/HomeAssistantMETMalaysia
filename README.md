@@ -1,10 +1,13 @@
+> [!Warning]
+> This template is no longer maintained.
+> Please use the integration instead. 
+>
+> [![Repo](https://img.shields.io/badge/zubir2k-homeassistant/malaysiaweather-brightgreen?logo=github)](https://github.com/zubir2k/homeassistant-malaysiaweather)
+> 
+
 ![metmalaysia](https://user-images.githubusercontent.com/1905339/221524236-022f5460-1e30-4c00-81a8-a9560d36a668.png) \
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=zubir2k.homeassistantmetmalaysia.visitor-badge)
 [![Donate](https://img.shields.io/badge/donate-Coffee-yellow.svg)](https://zbrj.ml/buymecoffee)
-
-> [!Tip]
-> Home Assistant Integration is available as a successor to this template. \
-> [https://github.com/zubir2k/homeassistant-malaysiaweather](https://github.com/zubir2k/homeassistant-malaysiaweather)
 
 Weather forecast from Malaysia Meteorological Department (MET) API.\
 Please register and obtain METToken from [https://api.met.gov.my/](https://api.met.gov.my/)
